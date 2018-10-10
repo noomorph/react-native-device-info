@@ -3,12 +3,6 @@
  */
 import { Platform, NativeModules, Dimensions } from 'react-native';
 
-var RNDeviceInfo = NativeModules.RNDeviceInfo;
-
-if (!RNDeviceInfo && Platform.OS === 'web') {
-  RNDeviceInfo = require('./web');
-}
-
 const devicesWithNotch = [
   {
     brand: 'Apple',
@@ -124,120 +118,135 @@ const devicesWithNotch = [
   },
 ];
 
+let _RNDeviceInfo = null;
+
+function RNDeviceInfo() {
+  if (_RNDeviceInfo === null) {
+    if (Platform.OS === 'web') {
+      _RNDeviceInfo = require('./web');
+    } else {
+      _RNDeviceInfo = NativeModules.RNDeviceInfo;
+    }
+  }
+
+  return _RNDeviceInfo;
+}
+
 export default {
   getUniqueID: function() {
-    return RNDeviceInfo.uniqueId;
+    return RNDeviceInfo().uniqueId;
   },
   getInstanceID: function() {
-    return RNDeviceInfo.instanceId;
+    return RNDeviceInfo().instanceId;
   },
   getSerialNumber: function() {
-    return RNDeviceInfo.serialNumber;
+    return RNDeviceInfo().serialNumber;
   },
   getIPAddress: function() {
-    return RNDeviceInfo.getIpAddress();
+    return RNDeviceInfo().getIpAddress();
   },
   getMACAddress: function() {
-    return RNDeviceInfo.getMacAddress();
+    return RNDeviceInfo().getMacAddress();
   },
   getDeviceId: function() {
-    return RNDeviceInfo.deviceId;
+    return RNDeviceInfo().deviceId;
   },
   getManufacturer: function() {
-    return RNDeviceInfo.systemManufacturer;
+    return RNDeviceInfo().systemManufacturer;
   },
   getModel: function() {
-    return RNDeviceInfo.model;
+    return RNDeviceInfo().model;
   },
   getBrand: function() {
-    return RNDeviceInfo.brand;
+    return RNDeviceInfo().brand;
   },
   getSystemName: function() {
-    return RNDeviceInfo.systemName;
+    return RNDeviceInfo().systemName;
   },
   getSystemVersion: function() {
-    return RNDeviceInfo.systemVersion;
+    return RNDeviceInfo().systemVersion;
   },
   getAPILevel: function() {
-    return RNDeviceInfo.apiLevel;
+    return RNDeviceInfo().apiLevel;
   },
   getBundleId: function() {
-    return RNDeviceInfo.bundleId;
+    return RNDeviceInfo().bundleId;
   },
   getApplicationName: function() {
-    return RNDeviceInfo.appName;
+    return RNDeviceInfo().appName;
   },
   getBuildNumber: function() {
-    return RNDeviceInfo.buildNumber;
+    return RNDeviceInfo().buildNumber;
   },
   getVersion: function() {
-    return RNDeviceInfo.appVersion;
+    return RNDeviceInfo().appVersion;
   },
   getReadableVersion: function() {
-    return RNDeviceInfo.appVersion + '.' + RNDeviceInfo.buildNumber;
+    return RNDeviceInfo().appVersion + '.' + RNDeviceInfo().buildNumber;
   },
   getDeviceName: function() {
-    return RNDeviceInfo.deviceName;
+    return RNDeviceInfo().deviceName;
   },
   getUserAgent: function() {
-    return RNDeviceInfo.userAgent;
+    return RNDeviceInfo().userAgent;
   },
   getDeviceLocale: function() {
-    return RNDeviceInfo.deviceLocale;
+    return RNDeviceInfo().deviceLocale;
   },
   getDeviceCountry: function() {
-    return RNDeviceInfo.deviceCountry;
+    return RNDeviceInfo().deviceCountry;
   },
   getTimezone: function() {
-    return RNDeviceInfo.timezone;
+    return RNDeviceInfo().timezone;
   },
   getFontScale: function() {
-    return RNDeviceInfo.fontScale;
+    return RNDeviceInfo().fontScale;
   },
   isEmulator: function() {
-    return RNDeviceInfo.isEmulator;
+    return RNDeviceInfo().isEmulator;
   },
   isTablet: function() {
-    return RNDeviceInfo.isTablet;
+    return RNDeviceInfo().isTablet;
   },
   is24Hour: function() {
-    return RNDeviceInfo.is24Hour;
+    return RNDeviceInfo().is24Hour;
   },
   isPinOrFingerprintSet: function() {
-    return RNDeviceInfo.isPinOrFingerprintSet;
+    return RNDeviceInfo().isPinOrFingerprintSet;
   },
   hasNotch: function() {
-    return devicesWithNotch.findIndex(item => item.brand === RNDeviceInfo.brand && item.model === RNDeviceInfo.model) !== -1;
+    const { brand, model } = RNDeviceInfo();
+    return devicesWithNotch.findIndex(item => item.brand === brand && item.model === model) !== -1;
   },
   getFirstInstallTime: function() {
-    return RNDeviceInfo.firstInstallTime;
+    return RNDeviceInfo().firstInstallTime;
   },
   getInstallReferrer: function() {
-    return RNDeviceInfo.installReferrer;
+    return RNDeviceInfo().installReferrer;
   },
   getLastUpdateTime: function() {
-    return RNDeviceInfo.lastUpdateTime;
+    return RNDeviceInfo().lastUpdateTime;
   },
   getPhoneNumber: function() {
-    return RNDeviceInfo.phoneNumber;
+    return RNDeviceInfo().phoneNumber;
   },
   getCarrier: function() {
-    return RNDeviceInfo.carrier;
+    return RNDeviceInfo().carrier;
   },
   getTotalMemory: function() {
-    return RNDeviceInfo.totalMemory;
+    return RNDeviceInfo().totalMemory;
   },
   getMaxMemory: function() {
-    return RNDeviceInfo.maxMemory;
+    return RNDeviceInfo().maxMemory;
   },
   getTotalDiskCapacity: function() {
-    return RNDeviceInfo.totalDiskCapacity;
+    return RNDeviceInfo().totalDiskCapacity;
   },
   getFreeDiskStorage: function() {
-    return RNDeviceInfo.freeDiskStorage;
+    return RNDeviceInfo().freeDiskStorage;
   },
   getBatteryLevel: function() {
-    return RNDeviceInfo.getBatteryLevel();
+    return RNDeviceInfo().getBatteryLevel();
   },
   isLandscape: function() {
     const { height, width } = Dimensions.get('window');
